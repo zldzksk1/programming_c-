@@ -1,2 +1,2 @@
-# programming_c-
+# programming_c#
 Personal projects/coding practices with c#
