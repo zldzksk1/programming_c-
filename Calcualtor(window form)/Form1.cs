@@ -13,6 +13,8 @@ namespace CalcWinForm
     public partial class Form1 : Form
     {
         bool cal = false;
+        bool decimalCheck = false;
+        bool afterCal = false;
 
         public Form1()
         {
@@ -30,7 +32,31 @@ namespace CalcWinForm
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+
+        private void empty(object sender, EventArgs e)
+        {
+
+        }
+
+        private void squareRoot(object sender, EventArgs e)
+        {
+            int sRoot = int.Parse(label1.Text);
+            label1.Text = Math.Sqrt(sRoot).ToString();
+            decimalCheck = false;
+            cal = true;
+            afterCal = true;
+        }
+
+        private void makeDecimal(object sender, EventArgs e)
+        {
+            if (!decimalCheck)
+            {
+                label1.Text += ".";
+                decimalCheck = true;
+            }
+        }
+
+        private void deleteNum(object sender, EventArgs e)
         {
             int num = label1.Text.Length;
             if (num <= 1)
@@ -41,13 +67,21 @@ namespace CalcWinForm
                 label1.Text = label1.Text.Substring(0, num - 1);
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void ClearAll(object sender, EventArgs e)
         {
             label2.Text = "";
             label1.Text = "0";
+            decimalCheck = false;
         }
 
-        private void button15_Click(object sender, EventArgs e)
+        private void ClearEnter(object sender, EventArgs e)
+        {
+            label1.Text = " ";
+            decimalCheck = false;
+        }
+
+
+        private void dividedByx(object sender, EventArgs e)
         {
             label2.Text = "1/" + label1.Text;
             int x = Int32.Parse(label1.Text);
@@ -56,14 +90,14 @@ namespace CalcWinForm
             cal = true;
         }
 
-        private void button16_Click(object sender, EventArgs e)
+        private void getNum(object sender, EventArgs e)
         {
             if (label1.Text == "0")
             {
                 label1.Text = "";
             }
 
-            if (cal == true)
+            if (cal && afterCal)
             {
                 label1.Text = "";
                 label2.Text = "";
@@ -76,13 +110,23 @@ namespace CalcWinForm
             label1.Text += ((Button)sender).Text;
         }
 
-        private void button24_Click(object sender, EventArgs e)
+
+        private void getAction(object sender, EventArgs e)
         {
-            label2.Text = label2.Text + label1.Text + ((Button)sender).Text;
-            label1.Text = "0";
+            if (afterCal)
+            {
+                label2.Text = label1.Text + ((Button)sender).Text;
+                label1.Text = " ";
+                afterCal = false;
+            }
+            else 
+            {
+                label2.Text = label2.Text + label1.Text + ((Button)sender).Text;
+                label1.Text = "0";
+            }
         }
 
-        private void button25_Click(object sender, EventArgs e)
+        private void getAnswer(object sender, EventArgs e)
         {
             label2.Text = label2.Text + label1.Text;
 
@@ -93,8 +137,9 @@ namespace CalcWinForm
             DataTable dt = new DataTable();
             var v = dt.Compute(label2.Text, "").ToString();
             label1.Text = v;
-
+            decimalCheck = false;
             cal = true;
+            afterCal = true;
         }
     }
 }
